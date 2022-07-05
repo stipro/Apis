@@ -22,29 +22,38 @@ if ($_POST) {
   $val_JsonEncode =  json_decode($response);
   echo json_encode($val_JsonEncode);
 } elseif ($_GET) {
+  if ($_GET['producto']) {
+    if (strlen($_GET['producto']) > 1) {
+      $getRespose = 'Es mayor';
+      $searchProducto = $_GET['producto'];
+      $curl = curl_init();
+      curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://www.promart.pe/api/catalog_system/pub/products/search/?sc=2&ft=' . $searchProducto . '&O=OrderByScoreDESC',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+      ));
 
-  $curl = curl_init();
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => 'https://www.promart.pe/api/catalog_system/pub/products/search/?sc=2&ft=escoba&O=OrderByScoreDESC',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-  ));
+      $response = curl_exec($curl);
 
-  $response = curl_exec($curl);
+      curl_close($curl);
+      // Procesamos STRING a JSON
+      $val_JsonEncode =  json_decode($response);
+      //$final_Json = echo json_encode($val_JsonEncode);
+      //$final_Json = json_encode($val_JsonEncode);
 
-  curl_close($curl);
-  // Procesamos STRING a JSON
-  $val_JsonEncode =  json_decode($response);
-  $final_Json = json_encode($val_JsonEncode);
-  $rptController = array(
-    "estado" => '1',
-    "rptController" => $final_Json
-  );
+      $rptController = array(
+        "estado" => '1',
+        "get" => $getRespose,
+        "rptController" => $val_JsonEncode
+
+      );
+    }
+  }
 } else {
   $rptController = array(
     "codigoEstado" => '0',
