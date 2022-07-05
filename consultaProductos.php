@@ -1,5 +1,5 @@
 <?php
-header('Content-type: application/json; charset=utf-8');
+/* header('Content-type: application/json; charset=utf-8'); */
 $curl = curl_init();
 
 curl_setopt_array($curl, array(
@@ -16,4 +16,6 @@ curl_setopt_array($curl, array(
 $response = curl_exec($curl);
 
 curl_close($curl);
-echo json_encode($response);
+var_dump($response);
+/* echo json_encode($response); */
+?>
