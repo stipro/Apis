@@ -50,7 +50,6 @@ if ($_POST) {
         "estado" => '1',
         "get" => $getRespose,
         "rptController" => $val_JsonEncode
-
       );
     }
   }
